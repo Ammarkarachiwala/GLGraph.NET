@@ -10,7 +10,7 @@ using OpenTK.Input;
 using Size = System.Drawing.Size;
 
 namespace GLGraph.NET {
-
+    
     public class LineChangedEventArgs : EventArgs {
         public Line Line { get; set; }
         public LineChangedEventArgs(Line line) {
@@ -25,6 +25,24 @@ namespace GLGraph.NET {
         public GLColor Color { get; set; }
         public float Thickness { get; set; }
 
+        public Line (float thickness , double intesity, GLPoint[] points) {
+            var copy = new List<GLPoint>();
+            copy.AddRange(points);
+
+            Color = GetRandomColor(intesity);
+            Thickness = thickness;
+            Points = copy;
+        }
+
+        public Line (float thickness, GLPoint[] points) {
+            var copy = new List<GLPoint>();
+            copy.AddRange(points);
+
+            Color = GetRandomColor();
+            Thickness = thickness;
+            Points = copy;
+        }
+
         public Line(float thickness, GLColor color, GLPoint[] points) {
             var copy = new List<GLPoint>();
             copy.AddRange(points);
@@ -32,6 +50,10 @@ namespace GLGraph.NET {
             Color = color;
             Thickness = thickness;
             Points = copy;
+        }
+        
+        private GLColor GetRandomColor(double intensity=1.0) {
+            return new GLColor(intensity, new Random().NextDouble(), new Random().NextDouble(), new Random().NextDouble());
         }
 
         public void AddPoint(GLPoint point) {
